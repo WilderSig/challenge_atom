@@ -1,8 +1,45 @@
 @import "assets/styles/theme";
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
 
+html,
+body {
+  height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Inter, "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+}
+
+.oval-button {
+  border-radius: 25px !important;
+  text-transform: none !important;
+}
+
+.social-login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.google-login-button {
+  background-color: white !important;
+  color: black !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.facebook-login-button {
+  background-color: #385499 !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -1,0 +1,12 @@
+header {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-button {
+  right: 2rem;
+  text-transform: none;
+  border-radius: 8px;
+}
