@@ -44,6 +44,14 @@
 
 .error {
   color: red;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

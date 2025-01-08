@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Task } from '../../models/task.model';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TaskService } from '../../services/tasks/task.service';
 
 @Component({
   selector: 'app-home',
@@ -33,29 +34,31 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class HomeComponent {
   showAddTask: boolean = false;
-
-  tasks: Task[] = [
-    {
-      title: 'Sample Task 1',
-      description: 'This is a sample task description.',
-      creationDate: new Date(),
-      completed: false,
-      isEditing: false,
-    },
-    {
-      title: 'Sample Task 2',
-      description: 'This is another sample task description.',
-      creationDate: new Date(),
-      completed: true,
-      isEditing: false,
-    },
-  ];
-
+  private taskService = inject(TaskService);
+  userId: string = sessionStorage.getItem('userId') ?? '';
+  tasks: Task[] = [];
   newTaskTitle: string = '';
   newTaskDescription: string = '';
-
   filter: 'all' | 'pending' | 'completed' = 'all';
 
+  //cargamos las tareas del usuario
+  ngOnInit(): void {
+    this.loadTasks();
+  }
+
+  // Cargar todas las tareas
+  loadTasks(): void {
+    this.taskService.getTasks(this.userId).subscribe({
+      next: (tasks) => {
+        this.tasks = tasks;
+        console.log('Tareas cargadas:', tasks);
+      },
+      error: (error) => {
+        console.error('Error al cargar tareas:', error);
+      },
+    });
+  }
+  //filtramos las tareas por lo que el usuario desee.
   get filteredTasks(): Task[] {
     if (this.filter === 'pending') {
       return this.tasks.filter((task) => !task.completed);
@@ -70,19 +73,28 @@ export class HomeComponent {
     this.showAddTask = !this.showAddTask; // Alterna entre mostrar y ocultar el formulario
   }
 
+  // Crear una nueva tarea
   addTask(): void {
-    if (this.newTaskTitle.trim() && this.newTaskDescription.trim()) {
-      this.tasks.push({
-        title: this.newTaskTitle,
-        description: this.newTaskDescription,
-        creationDate: new Date(),
-        completed: false,
-        isEditing: false,
-      });
-      this.newTaskTitle = '';
-      this.newTaskDescription = '';
-      this.showAddTask = false;
-    }
+    const newTask: Task = {
+      title: this.newTaskTitle,
+      description: this.newTaskDescription,
+      creationDate: new Date(),
+      completed: false,
+      userId: this.userId,
+    };
+
+    this.taskService.createTask(newTask).subscribe({
+      next: (response) => {
+        console.log('Tarea creada:', response);
+        this.newTaskTitle = '';
+        this.newTaskDescription = '';
+        this.showAddTask = false;
+        this.loadTasks(); // Recargar las tareas
+      },
+      error: (error) => {
+        console.error('Error al crear tarea:', error);
+      },
+    });
   }
 
   editTask(task: Task): void {
@@ -97,8 +109,30 @@ export class HomeComponent {
     }
   }
 
-  deleteTask(task: Task): void {
-    this.tasks = this.tasks.filter((t) => t !== task);
+  // Actualizar una tarea
+  updateTask(taskId: string, updatedData: Partial<Task>): void {
+    console.log(taskId, updatedData);
+    this.taskService.updateTask(taskId, updatedData).subscribe({
+      next: () => {
+        console.log('Tarea actualizada');
+        this.loadTasks(); // Recargar las tareas
+      },
+      error: (error) => {
+        console.error('Error al actualizar tarea:', error);
+      },
+    });
+  }
+
+  deleteTask(taskId: string): void {
+    this.taskService.deleteTask(taskId).subscribe({
+      next: () => {
+        console.log('Tarea eliminada');
+        this.loadTasks(); // Recargar las tareas
+      },
+      error: (error) => {
+        console.error('Error al eliminar tarea:', error);
+      },
+    });
   }
 
   filterTasks(criteria: 'all' | 'pending' | 'completed'): void {

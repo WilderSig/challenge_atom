@@ -11,12 +11,6 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ModalRegisterComponent } from '../../components/modal-register/modal-register.component';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  Auth,
-  signInWithPopup,
-} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +33,6 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
-  private auth = inject(Auth);
 
   email = '';
   password = '';
@@ -54,6 +47,7 @@ export class LoginComponent {
     } catch (error) {
       console.error('Error al iniciar sesión con Facebook:', error);
       this.response = 'Error al iniciar sesión con Facebook.';
+      this.messageClear();
     }
   }
   loginUser() {
@@ -65,6 +59,7 @@ export class LoginComponent {
       error: (err) => {
         this.response =
           'Tu correo no está registrado. Por favor, inténtalo de nuevo.';
+        this.messageClear();
       },
     });
   }
@@ -77,11 +72,18 @@ export class LoginComponent {
   async loginWithGoogle(): Promise<void> {
     try {
       const response = await this.authService.loginWithGoogle();
-      console.log('Login Exitoso:', response);
+      sessionStorage.setItem('userId', response.uid);
       this.router.navigate(['/home']); // Redirige al usuario
     } catch (error) {
-      console.error('Error al iniciar sesión con Google:', error);
       this.response = 'Error al iniciar sesión con Google.';
+      this.messageClear();
     }
+  }
+
+  messageClear() {
+    // Limpia el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.response = null;
+    }, 3000); // 3000 ms = 3 segundos
   }
 }

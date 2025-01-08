@@ -1,5 +1,4 @@
-const express = require("express");
-const { admin } = require("../firebaseService");
+const express = require("express");const { admin } = require("../firebaseService");
 const router = express.Router();
 
 // Login con correo y contraseña
@@ -18,10 +17,13 @@ router.post("/login", async (req, res) => {
 // Login con Google/Facebook
 router.post("/social-login", async (req, res) => {
   const { token } = req.body; // Token enviado desde el cliente
+  console.log(token);
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
+    console.log(decodedToken);
     res.status(200).send({ uid: decodedToken.uid, email: decodedToken.email });
   } catch (error) {
+    console.log(error);
     res.status(401).send({ error: "Token inválido" });
   }
 });

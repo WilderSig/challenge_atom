@@ -41,11 +41,15 @@ export class ModalRegisterComponent {
       },
       error: (err) => {
         this.response = 'Error al registrar el usuario. Inténtalo nuevamente.';
-        console.error(err);
+        this.messageClear();
       },
     });
   }
-
+  messageClear() {
+    setTimeout(() => {
+      this.response = null;
+    }, 3000);
+  }
   closeModal(): void {
     this.dialogRef.close(); // Cierra el modal manualmente
   }
