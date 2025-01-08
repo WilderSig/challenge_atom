@@ -43,4 +43,5 @@ Thumbs.db
 
 .nx/
 
-
+#Enviroments
+src/enviroments
