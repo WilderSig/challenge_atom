@@ -5,7 +5,7 @@ const usersRoutes = require("./routes/users");
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200/" }));
+app.use(cors({ origin: "https://challenge-atom-447118.web.app" }));
 // Middleware para configurar COOP
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
