@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../../models/task.model';
+import { environment } from '../../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  //  private apiUrl =
-  //  'http://127.0.0.1:5001/challenge-atom-447118/us-central1/api';
-  private apiUrl =
-    'https://us-central1-challenge-atom-447118.cloudfunctions.net/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

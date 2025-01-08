@@ -7,15 +7,13 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from '@angular/fire/auth';
+import { environment } from '../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  //private apiUrl =
-  //'http://127.0.0.1:5001/challenge-atom-447118/us-central1/api';
-  private apiUrl =
-    'https://us-central1-challenge-atom-447118.cloudfunctions.net/api';
+  private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
   private auth = inject(Auth);
   // Crear un nuevo usuario
@@ -26,6 +24,7 @@ export class AuthService {
 
   // Login con correo
   login(email: string, password: string): Observable<any> {
+    console.log(this.apiUrl);
     const payload = { email, password };
     return this.http.post(`${this.apiUrl}/users/login`, payload);
   }

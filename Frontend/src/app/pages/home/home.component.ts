@@ -12,6 +12,7 @@ import { Task } from '../../models/task.model';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TaskService } from '../../services/tasks/task.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -33,8 +34,9 @@ import { TaskService } from '../../services/tasks/task.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  showAddTask: boolean = false;
   private taskService = inject(TaskService);
+  private snackBar = inject(MatSnackBar);
+  showAddTask: boolean = false;
   userId: string = sessionStorage.getItem('userId') ?? '';
   tasks: Task[] = [];
   newTaskTitle: string = '';
@@ -127,15 +129,23 @@ export class HomeComponent {
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
         console.log('Tarea eliminada');
+        this.showMessage('Tarea eliminada');
         this.loadTasks(); // Recargar las tareas
       },
       error: (error) => {
         console.error('Error al eliminar tarea:', error);
+        this.showMessage('Error al eliminar la tarea');
       },
     });
   }
 
   filterTasks(criteria: 'all' | 'pending' | 'completed'): void {
     this.filter = criteria;
+  }
+
+  showMessage(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+    });
   }
 }
