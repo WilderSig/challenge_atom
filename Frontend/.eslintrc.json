@@ -75,7 +75,9 @@
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility"
       ],
-      "rules": {}
+      "rules": {
+        "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
+      }
     }
   ]
 }

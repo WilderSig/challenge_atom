@@ -1,23 +1,21 @@
-import { Component} from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {MatTooltipModule} from '@angular/material/tooltip';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule,MatButtonModule, MatTooltipModule],
+  imports: [MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-
+  private router = inject(Router);
 
   logout(): void {
-    // Aquí puedes eliminar tokens de sesión o cualquier otra lógica
-    console.log('Cerrando sesión...');
+    sessionStorage.removeItem('userId');
+    this.router.navigate(['/login']);
   }
-
-
 }

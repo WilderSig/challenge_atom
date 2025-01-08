@@ -1,47 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Para directivas como *ngIf y *ngFor
 import { FormsModule } from '@angular/forms'; // Para [(ngModel)]
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCardModule } from '@angular/material/card';
-import {MatCheckboxModule } from '@angular/material/checkbox';
-import { HeaderComponent } from "../../shared/header/header.component";
-import { FooterComponent } from "../../shared/footer/footer.component";  
-import { Task } from "../../models/task.model";
-
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Task } from '../../models/task.model';
+import { HeaderComponent } from '../../shared/header/header.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule,
-    MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, MatCardModule, MatCheckboxModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCardModule,
+    MatCheckboxModule,
+    HeaderComponent,
+    HttpClientModule,
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   showAddTask: boolean = false;
 
-
   tasks: Task[] = [
-    { 
-      title: 'Sample Task 1', 
-      description: 'This is a sample task description.', 
-      creationDate: new Date(), 
-      completed: false, 
-      isEditing: false
+    {
+      title: 'Sample Task 1',
+      description: 'This is a sample task description.',
+      creationDate: new Date(),
+      completed: false,
+      isEditing: false,
     },
-    { 
-      title: 'Sample Task 2', 
-      description: 'This is another sample task description.', 
-      creationDate: new Date(), 
-      completed: true, 
-      isEditing: false
-    }
+    {
+      title: 'Sample Task 2',
+      description: 'This is another sample task description.',
+      creationDate: new Date(),
+      completed: true,
+      isEditing: false,
+    },
   ];
 
   newTaskTitle: string = '';
@@ -51,9 +58,10 @@ export class HomeComponent {
 
   get filteredTasks(): Task[] {
     if (this.filter === 'pending') {
-      return this.tasks.filter(task => !task.completed);
-    } else if (this.filter === 'completed') {
-      return this.tasks.filter(task => task.completed);
+      return this.tasks.filter((task) => !task.completed);
+    }
+    if (this.filter === 'completed') {
+      return this.tasks.filter((task) => task.completed);
     }
     return this.tasks;
   }
@@ -64,12 +72,12 @@ export class HomeComponent {
 
   addTask(): void {
     if (this.newTaskTitle.trim() && this.newTaskDescription.trim()) {
-      this.tasks.push({ 
-        title: this.newTaskTitle, 
-        description: this.newTaskDescription, 
+      this.tasks.push({
+        title: this.newTaskTitle,
+        description: this.newTaskDescription,
         creationDate: new Date(),
-        completed: false, 
-        isEditing: false 
+        completed: false,
+        isEditing: false,
       });
       this.newTaskTitle = '';
       this.newTaskDescription = '';
@@ -90,7 +98,7 @@ export class HomeComponent {
   }
 
   deleteTask(task: Task): void {
-    this.tasks = this.tasks.filter(t => t !== task);
+    this.tasks = this.tasks.filter((t) => t !== task);
   }
 
   filterTasks(criteria: 'all' | 'pending' | 'completed'): void {

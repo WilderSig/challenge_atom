@@ -1,0 +1,14 @@
+<div class="mat-dialog-container">
+    <h2 mat-dialog-title>Crear Cuenta</h2>
+    <mat-dialog-content >
+            <mat-form-field appearance="outline" class="dialog-content">
+                <input matInput [(ngModel)]="email" name="email" type="email" required  placeholder="Correo Electrónico"/>
+            </mat-form-field>
+            <p *ngIf="response" class="response">{{ response }}</p>
+        
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button color="warn" (click)="closeModal()">Cerrar</button>
+        <button mat-raised-button color="primary" (click)="registerUser()">Registrar</button>
+    </mat-dialog-actions>
+</div>
